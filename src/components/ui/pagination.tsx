@@ -49,7 +49,7 @@ function PaginationLink({
   return (
     <Button
       className={cn(className)}
-      nativeButton={false}
+      nativeButton={true}
       render={
         <a
           aria-current={isActive ? "page" : undefined}
@@ -108,7 +108,7 @@ function PaginationEllipsis({
       aria-hidden
       className={cn(
         "flex size-8 items-center justify-center [&_svg:not([class*='size-'])]:size-4",
-        className
+        className,
       )}
       data-slot="pagination-ellipsis"
       {...props}
