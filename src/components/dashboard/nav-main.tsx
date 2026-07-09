@@ -1,6 +1,12 @@
 "use client";
 
-import { CaretRight, type Icon } from "@phosphor-icons/react";
+import {
+  CaretRight,
+  Gear,
+  type Icon,
+  SquaresFour,
+  Warning,
+} from "@phosphor-icons/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -21,15 +27,31 @@ import {
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
 
-export interface NavMainItem {
+interface NavMainItem {
   icon: Icon;
   items?: { title: string; url: string }[];
   title: string;
   url: string;
 }
 
-export function NavMain({ items }: { items: NavMainItem[] }) {
+const NAV_MAIN: NavMainItem[] = [
+  { icon: SquaresFour, title: "Dashboard", url: "/dashboard" },
+  { icon: Warning, title: "Reports", url: "/dashboard/reports" },
+  {
+    icon: Gear,
+    items: [
+      { title: "Project", url: "/dashboard/settings#project" },
+      { title: "Widget", url: "/dashboard/settings#widget" },
+      { title: "Notifications", url: "/dashboard/settings#notifications" },
+    ],
+    title: "Settings",
+    url: "/dashboard/settings",
+  },
+];
+
+export function NavMain() {
   const pathname = usePathname();
+  const items = NAV_MAIN;
 
   return (
     <SidebarGroup>

@@ -10,7 +10,11 @@ export default function ReportsLoading() {
           <Skeleton className="h-7 w-32" />
           <Skeleton className="h-4 w-64" />
         </div>
-        <Skeleton className="h-10 w-full rounded-md" />
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+          <Skeleton className="h-9 flex-1 rounded-md" />
+          <Skeleton className="h-9 w-72 rounded-md" />
+        </div>
+        <Skeleton className="h-3 w-28" />
         <ReportListSkeleton />
       </div>
     </PageContainer>

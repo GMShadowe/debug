@@ -1,17 +1,13 @@
 import {
   BookOpen,
-  FolderSimple,
-  Gear,
   Lifebuoy,
   PaperPlaneTilt,
-  SquaresFour,
-  Warning,
 } from "@phosphor-icons/react/dist/ssr";
 import Link from "next/link";
 import type { ComponentProps } from "react";
 
 import { Logo } from "@/components/brand/logo";
-import { NavMain, type NavMainItem } from "@/components/dashboard/nav-main";
+import { NavMain } from "@/components/dashboard/nav-main";
 import { NavProjects } from "@/components/dashboard/nav-projects";
 import { NavSecondary } from "@/components/dashboard/nav-secondary";
 import { NavUser, type NavUserData } from "@/components/dashboard/nav-user";
@@ -24,21 +20,6 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-
-const NAV_MAIN: NavMainItem[] = [
-  { icon: SquaresFour, title: "Dashboard", url: "/dashboard" },
-  { icon: Warning, title: "Reports", url: "/dashboard/reports" },
-  {
-    icon: Gear,
-    items: [
-      { title: "Project", url: "/dashboard/settings#project" },
-      { title: "Widget", url: "/dashboard/settings#widget" },
-      { title: "Notifications", url: "/dashboard/settings#notifications" },
-    ],
-    title: "Settings",
-    url: "/dashboard/settings",
-  },
-];
 
 const NAV_SECONDARY = [
   { icon: Lifebuoy, title: "Support" },
@@ -73,12 +54,8 @@ export function AppSidebar({
       </SidebarHeader>
 
       <SidebarContent>
-        <NavMain items={NAV_MAIN} />
-        <NavProjects
-          projects={[
-            { icon: FolderSimple, name: projectName, url: "/dashboard" },
-          ]}
-        />
+        <NavMain />
+        <NavProjects projectName={projectName} />
         <NavSecondary className="mt-auto" items={NAV_SECONDARY} />
       </SidebarContent>
 

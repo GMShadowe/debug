@@ -8,7 +8,7 @@ export function StatCard({ stat }: { stat: StatCardType }) {
   const isPositive = (stat.delta ?? 0) >= 0;
 
   return (
-    <div className="rounded-xl border border-border bg-card p-5 transition-colors hover:border-hairline-strong">
+    <div className="card-interactive rounded-xl border border-border bg-card p-5">
       <p className="text-ink-subtle text-xs">{stat.label}</p>
       <div className="mt-3 flex items-end justify-between gap-2">
         <span className="font-heading font-semibold text-2xl text-foreground tabular-nums tracking-tight">

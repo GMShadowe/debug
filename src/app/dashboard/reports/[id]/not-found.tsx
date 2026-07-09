@@ -12,6 +12,7 @@ export default function ReportNotFound() {
         action={
           <Button
             className="h-8 rounded-md px-3 text-sm"
+            nativeButton={false}
             render={<Link href="/dashboard/reports">Back to reports</Link>}
           />
         }
