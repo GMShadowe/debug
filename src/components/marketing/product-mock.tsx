@@ -134,7 +134,7 @@ export function WidgetMock() {
       </div>
 
       {/* Widget panel */}
-      <div className="panel-highlight absolute right-6 bottom-20 w-64 rounded-xl border border-hairline-strong bg-card p-3.5 shadow-2xl">
+      <div className="panel-highlight absolute right-6 bottom-20 w-64 rounded-2xl border border-hairline-strong bg-card p-3.5 shadow-2xl">
         <div className="flex items-center justify-between">
           <span className="font-medium text-foreground text-xs">
             Report a bug

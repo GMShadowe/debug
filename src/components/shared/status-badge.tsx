@@ -7,7 +7,7 @@ export function StatusBadge({ status }: { status: BugStatus }) {
   return (
     <span
       className={cn(
-        "inline-flex items-center rounded-full border px-2 py-0.5 font-medium text-[11px]",
+        "inline-flex h-5 items-center rounded-md border px-1.5 font-medium text-[11px]",
         meta.className
       )}
     >

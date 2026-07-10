@@ -33,8 +33,9 @@ function SubmitButton() {
   const { pending } = useFormStatus();
   return (
     <Button
-      className="h-10 w-full gap-2 rounded-md border-border bg-card text-sm hover:bg-muted"
+      className="w-full"
       disabled={pending}
+      size="lg"
       type="submit"
       variant="outline"
     >

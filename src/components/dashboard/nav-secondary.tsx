@@ -1,6 +1,6 @@
-import type { Icon } from "@phosphor-icons/react";
 import type { ComponentProps } from "react";
 
+import { Icon, type IconSvgElement } from "@/components/ui/icon";
 import {
   SidebarGroup,
   SidebarGroupContent,
@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/sidebar";
 
 export interface NavSecondaryItem {
-  icon: Icon;
+  icon: IconSvgElement;
   title: string;
 }
 
@@ -28,7 +28,7 @@ export function NavSecondary({
             <SidebarMenuItem key={item.title}>
               {/* Placeholder destinations until these pages exist. */}
               <SidebarMenuButton size="sm">
-                <item.icon />
+                <Icon className="size-3.5" icon={item.icon} />
                 <span>{item.title}</span>
               </SidebarMenuButton>
             </SidebarMenuItem>

@@ -38,7 +38,7 @@ export function CodeBlock({
   return (
     <div
       className={cn(
-        "panel-highlight overflow-hidden rounded-xl border border-border bg-card",
+        "panel-highlight overflow-hidden rounded-2xl border border-border bg-card",
         className
       )}
     >
@@ -48,7 +48,7 @@ export function CodeBlock({
         </span>
         <button
           aria-label="Copy code"
-          className="grid size-6 place-items-center rounded-md text-ink-subtle transition-colors duration-150 hover:bg-muted hover:text-foreground"
+          className="grid size-7 place-items-center rounded-md text-ink-subtle transition-colors duration-150 hover:bg-muted hover:text-foreground"
           onClick={handleCopy}
           type="button"
         >

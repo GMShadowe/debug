@@ -6,7 +6,6 @@ import { redirect } from "next/navigation";
 import { AuthForm } from "@/components/auth/auth-form";
 import { GoogleButton } from "@/components/auth/google-button";
 import { Logo } from "@/components/brand/logo";
-import { getUserProject } from "@/lib/data";
 import { createClient } from "@/lib/supabase/server";
 
 export const metadata: Metadata = {
@@ -28,10 +27,10 @@ export default async function AuthPage({
     data: { user },
   } = await supabase.auth.getUser();
 
-  // Already signed in — send them onward.
+  // Already signed in. /dashboard resolves project scope (or bounces to
+  // onboarding) on its own, so there is nothing to decide here.
   if (user) {
-    const project = await getUserProject();
-    redirect(project ? "/dashboard" : "/onboarding");
+    redirect("/dashboard");
   }
 
   const { error } = await searchParams;
@@ -39,22 +38,22 @@ export default async function AuthPage({
 
   return (
     <main className="flex min-h-dvh flex-col items-center justify-center bg-background px-6 py-16">
-      <div className="w-full max-w-sm">
-        <div className="mb-8 flex flex-col items-center text-center">
-          <Link className="mb-6" href="/">
+      <div className="w-full max-w-md">
+        <div className="mb-10 flex flex-col items-center text-center">
+          <Link className="mb-8" href="/">
             <Logo />
           </Link>
-          <h1 className="font-heading font-semibold text-foreground text-xl tracking-tight">
+          <h1 className="font-heading font-semibold text-4xl text-foreground tracking-[-0.04em]">
             Welcome to Lumen
           </h1>
-          <p className="mt-1.5 text-ink-subtle text-sm">
+          <p className="mt-3 text-ink-subtle">
             Sign in to your dashboard or create a new account.
           </p>
         </div>
 
-        <div className="rounded-xl border border-border bg-card p-6">
+        <div className="rounded-lg border border-border bg-card p-8">
           {errorMessage ? (
-            <p className="mb-4 flex items-center gap-1.5 rounded-md border border-destructive/20 bg-destructive/10 px-3 py-2 text-destructive text-xs">
+            <p className="mb-5 flex items-center gap-2 rounded-md border border-destructive/20 bg-destructive/10 px-3 py-2 text-destructive text-sm">
               <WarningCircle className="size-4 shrink-0" />
               {errorMessage}
             </p>
@@ -62,16 +61,18 @@ export default async function AuthPage({
 
           <GoogleButton />
 
-          <div className="my-6 flex items-center gap-3">
+          <div className="my-7 flex items-center gap-3">
             <span className="h-px flex-1 bg-border" />
-            <span className="text-ink-subtle text-xs">or</span>
+            <span className="text-ink-tertiary text-xs uppercase tracking-widest">
+              or
+            </span>
             <span className="h-px flex-1 bg-border" />
           </div>
 
           <AuthForm />
         </div>
 
-        <p className="mt-6 text-center text-ink-subtle text-xs">
+        <p className="mt-8 text-center text-ink-tertiary text-sm">
           By continuing you agree to Lumen's Terms and Privacy Policy.
         </p>
       </div>

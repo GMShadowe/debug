@@ -1,122 +1,56 @@
 "use client";
 
-import {
-  CaretRight,
-  Gear,
-  type Icon,
-  SquaresFour,
-  Warning,
-} from "@phosphor-icons/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible";
+import { Icon } from "@/components/ui/icon";
 import {
   SidebarGroup,
+  SidebarGroupContent,
   SidebarGroupLabel,
   SidebarMenu,
-  SidebarMenuAction,
   SidebarMenuButton,
   SidebarMenuItem,
-  SidebarMenuSub,
-  SidebarMenuSubButton,
-  SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
+import { BugIcon, SettingsIcon, TerminalIcon } from "@/lib/icons";
+import type { Project } from "@/types";
 
-interface NavMainItem {
-  icon: Icon;
-  items?: { title: string; url: string }[];
-  title: string;
-  url: string;
-}
-
-const NAV_MAIN: NavMainItem[] = [
-  { icon: SquaresFour, title: "Dashboard", url: "/dashboard" },
-  { icon: Warning, title: "Reports", url: "/dashboard/reports" },
-  {
-    icon: Gear,
-    items: [
-      { title: "Project", url: "/dashboard/settings#project" },
-      { title: "Widget", url: "/dashboard/settings#widget" },
-      { title: "Notifications", url: "/dashboard/settings#notifications" },
-    ],
-    title: "Settings",
-    url: "/dashboard/settings",
-  },
-];
-
-export function NavMain() {
+/**
+ * Three destinations, not eight.
+ *
+ * - Bugs is the product; it is the landing route.
+ * - Install is permanent, not a checklist step. It doubles as the component's
+ *   documentation, so it has to stay reachable after setup is done.
+ * - API keys and members live under Settings.
+ */
+export function NavMain({ project }: { project: Project }) {
   const pathname = usePathname();
-  const items = NAV_MAIN;
+  const base = `/dashboard/${project.slug}`;
+
+  const items = [
+    { href: `${base}/bugs`, icon: BugIcon, label: "Bugs" },
+    { href: `${base}/install`, icon: TerminalIcon, label: "Install" },
+    { href: `${base}/settings`, icon: SettingsIcon, label: "Settings" },
+  ];
 
   return (
-    <SidebarGroup>
-      <SidebarGroupLabel>Platform</SidebarGroupLabel>
-      <SidebarMenu>
-        {items.map((item) => {
-          const active =
-            pathname === item.url || pathname.startsWith(`${item.url}/`);
-
-          // Leaf item — a plain link, no collapsible.
-          if (!item.items?.length) {
-            return (
-              <SidebarMenuItem key={item.title}>
-                <SidebarMenuButton
-                  isActive={active}
-                  render={<Link href={item.url} />}
-                  tooltip={item.title}
-                >
-                  <item.icon />
-                  <span>{item.title}</span>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            );
-          }
-
-          return (
-            <Collapsible
-              defaultOpen={active}
-              key={item.title}
-              render={<SidebarMenuItem />}
-            >
+    <SidebarGroup className="px-0">
+      <SidebarGroupLabel>Project</SidebarGroupLabel>
+      <SidebarGroupContent>
+        <SidebarMenu>
+          {items.map((item) => (
+            <SidebarMenuItem key={item.href}>
               <SidebarMenuButton
-                isActive={active}
-                render={<Link href={item.url} />}
-                tooltip={item.title}
+                isActive={pathname.startsWith(item.href)}
+                render={<Link href={item.href} />}
               >
-                <item.icon />
-                <span>{item.title}</span>
+                <Icon icon={item.icon} />
+                <span>{item.label}</span>
               </SidebarMenuButton>
-              <CollapsibleTrigger
-                render={
-                  <SidebarMenuAction className="data-[panel-open]:rotate-90" />
-                }
-              >
-                <CaretRight />
-                <span className="sr-only">Toggle</span>
-              </CollapsibleTrigger>
-              <CollapsibleContent>
-                <SidebarMenuSub>
-                  {item.items.map((subItem) => (
-                    <SidebarMenuSubItem key={subItem.title}>
-                      <SidebarMenuSubButton
-                        isActive={pathname === subItem.url}
-                        render={<Link href={subItem.url} />}
-                      >
-                        <span>{subItem.title}</span>
-                      </SidebarMenuSubButton>
-                    </SidebarMenuSubItem>
-                  ))}
-                </SidebarMenuSub>
-              </CollapsibleContent>
-            </Collapsible>
-          );
-        })}
-      </SidebarMenu>
+            </SidebarMenuItem>
+          ))}
+        </SidebarMenu>
+      </SidebarGroupContent>
     </SidebarGroup>
   );
 }

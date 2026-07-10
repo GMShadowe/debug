@@ -7,13 +7,13 @@ interface LogoProps {
 }
 
 /**
- * Lumen brand mark — a lavender aperture glyph. The mark is the one place the
- * primary accent is always allowed to appear.
+ * Lumen brand mark — a white aperture disc with the glyph knocked out in the
+ * canvas colour. Circular, so it reads as a sibling of the pill buttons.
  */
 export function Logo({ className, withWordmark = true }: LogoProps) {
   return (
     <span className={cn("inline-flex items-center gap-2.5", className)}>
-      <span className="grid size-7 place-items-center rounded-md bg-primary text-primary-foreground shadow-[0_1px_0_0_rgba(255,255,255,0.12)_inset]">
+      <span className="grid size-7 place-items-center rounded-md bg-primary text-primary-foreground">
         <svg
           aria-hidden="true"
           className="size-4"
@@ -29,7 +29,7 @@ export function Logo({ className, withWordmark = true }: LogoProps) {
         </svg>
       </span>
       {withWordmark ? (
-        <span className="font-heading font-semibold text-[15px] text-foreground tracking-tight">
+        <span className="font-heading font-semibold text-base text-foreground tracking-[-0.03em]">
           Lumen
         </span>
       ) : null}

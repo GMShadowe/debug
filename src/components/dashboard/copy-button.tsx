@@ -1,9 +1,9 @@
 "use client";
 
-import { CaretDown, Check, Copy } from "@phosphor-icons/react";
 import { useState } from "react";
-
 import { Button } from "@/components/ui/button";
+import { Icon } from "@/components/ui/icon";
+import { CheckIcon, CopyIcon } from "@/lib/icons";
 
 const RESET_DELAY_MS = 2000;
 
@@ -21,18 +21,18 @@ export function CopyButton({ value }: { value: string }) {
   };
 
   return (
-    <Button
-      className="h-8 gap-1.5 rounded-md px-2.5 text-sm"
-      onClick={handleCopy}
-      variant="outline"
-    >
+    // No caret: this button copies, it does not open a menu.
+    <Button onClick={handleCopy} size="sm" variant="outline">
       {copied ? (
-        <Check className="size-3.5 text-success" weight="bold" />
+        <Icon
+          className="size-3.5 text-success"
+          icon={CheckIcon}
+          strokeWidth={2.5}
+        />
       ) : (
-        <Copy className="size-3.5" />
+        <Icon className="size-3.5" icon={CopyIcon} />
       )}
       {copied ? "Copied" : "Copy"}
-      <CaretDown className="size-3 text-ink-subtle" />
     </Button>
   );
 }

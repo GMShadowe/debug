@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { toast } from "sonner";
 
-import { ApiKeyField } from "@/components/settings/api-key-field";
 import {
   SettingsCard,
   SettingsCardBody,
@@ -13,13 +12,12 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-export function ProjectInfoForm({
-  initialName,
-  apiKey,
-}: {
-  initialName: string;
-  apiKey: string;
-}) {
+/**
+ * Project identity only. The API key used to live here *and* in the API keys
+ * section directly below — the same key rendered twice on one page, which makes
+ * a reader wonder whether they are looking at two different keys.
+ */
+export function ProjectInfoForm({ initialName }: { initialName: string }) {
   const [name, setName] = useState(initialName);
   const dirty = name.trim() !== initialName && name.trim().length > 0;
 
@@ -32,38 +30,26 @@ export function ProjectInfoForm({
   return (
     <form onSubmit={onSubmit}>
       <SettingsCard>
-        <SettingsCardBody className="space-y-5">
+        <SettingsCardBody>
           <div className="space-y-2">
             <Label htmlFor="project-name">Project name</Label>
             <Input
-              className="h-9 max-w-md"
+              className="max-w-sm"
               id="project-name"
               onChange={(event) => setName(event.target.value)}
               value={name}
             />
-            <p className="text-ink-subtle text-xs">
+            <p className="text-[12px] text-ink-tertiary">
               This is how your project appears across Lumen.
-            </p>
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="api-key">API key</Label>
-            <ApiKeyField apiKey={apiKey} />
-            <p className="text-ink-subtle text-xs">
-              Use this key to authenticate the widget on your site.
             </p>
           </div>
         </SettingsCardBody>
 
         <SettingsCardFooter>
-          <span className="mr-auto text-ink-subtle text-xs">
-            {dirty ? "You have unsaved changes" : "All changes saved"}
+          <span className="mr-auto text-[12px] text-ink-tertiary">
+            {dirty ? "Unsaved changes" : "All changes saved"}
           </span>
-          <Button
-            className="h-8 rounded-md px-3 text-sm"
-            disabled={!dirty}
-            type="submit"
-          >
+          <Button disabled={!dirty} size="sm" type="submit">
             Save changes
           </Button>
         </SettingsCardFooter>

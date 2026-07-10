@@ -1,65 +1,48 @@
-import {
-  BookOpen,
-  Lifebuoy,
-  PaperPlaneTilt,
-} from "@phosphor-icons/react/dist/ssr";
-import Link from "next/link";
 import type { ComponentProps } from "react";
 
-import { Logo } from "@/components/brand/logo";
 import { NavMain } from "@/components/dashboard/nav-main";
-import { NavProjects } from "@/components/dashboard/nav-projects";
 import { NavSecondary } from "@/components/dashboard/nav-secondary";
 import { NavUser, type NavUserData } from "@/components/dashboard/nav-user";
+import { ProjectSwitcher } from "@/components/dashboard/project-switcher";
 import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
   SidebarHeader,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import { DocsIcon, SupportIcon } from "@/lib/icons";
+import type { Project } from "@/types";
 
 const NAV_SECONDARY = [
-  { icon: Lifebuoy, title: "Support" },
-  { icon: PaperPlaneTilt, title: "Feedback" },
-  { icon: BookOpen, title: "Documentation" },
+  { icon: DocsIcon, title: "Documentation" },
+  { icon: SupportIcon, title: "Support" },
 ];
 
 export function AppSidebar({
-  projectName,
+  project,
+  projects,
   user,
   ...props
 }: {
-  projectName: string;
+  project: Project;
+  projects: Project[];
   user: NavUserData;
 } & ComponentProps<typeof Sidebar>) {
   return (
-    <Sidebar collapsible="icon" variant="inset" {...props}>
-      <SidebarHeader>
-        <SidebarMenu>
-          <SidebarMenuItem>
-            <SidebarMenuButton render={<Link href="/dashboard" />} size="lg">
-              <Logo className="shrink-0" withWordmark={false} />
-              <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-medium">{projectName}</span>
-                <span className="truncate text-ink-subtle text-xs">
-                  Free plan
-                </span>
-              </div>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-        </SidebarMenu>
+    // `offcanvas`, not `icon`: a rail of unlabelled glyphs is a memory test.
+    // Closing gives the content the full width, which is the actual reason
+    // anyone collapses a sidebar. Toggle with the trigger or ⌘B.
+    <Sidebar collapsible="offcanvas" variant="inset" {...props}>
+      <SidebarHeader className="p-2">
+        <ProjectSwitcher project={project} projects={projects} />
       </SidebarHeader>
 
-      <SidebarContent>
-        <NavMain />
-        <NavProjects projectName={projectName} />
+      <SidebarContent className="px-2">
+        <NavMain project={project} />
         <NavSecondary className="mt-auto" items={NAV_SECONDARY} />
       </SidebarContent>
 
-      <SidebarFooter>
+      <SidebarFooter className="p-2">
         <NavUser user={user} />
       </SidebarFooter>
     </Sidebar>

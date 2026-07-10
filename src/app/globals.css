@@ -15,6 +15,7 @@
   --color-ink-tertiary: var(--ink-tertiary);
   --color-primary-hover: var(--primary-hover);
   --color-primary-focus: var(--primary-focus);
+  --color-surface-app: var(--app-surface);
   --color-surface-1: var(--card);
   --color-surface-2: var(--popover);
   --color-surface-3: var(--accent);
@@ -52,80 +53,138 @@
   --color-popover: var(--popover);
   --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
-  --radius-sm: calc(var(--radius) * 0.6);
-  --radius-md: calc(var(--radius) * 0.8);
+  --radius-sm: calc(var(--radius) * 0.5);
+  --radius-md: calc(var(--radius) * 0.75);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) * 1.4);
   --radius-2xl: calc(var(--radius) * 1.8);
-  --radius-3xl: calc(var(--radius) * 2.2);
-  --radius-4xl: calc(var(--radius) * 2.6);
+  --radius-3xl: calc(var(--radius) * 2.4);
+  --radius-4xl: calc(var(--radius) * 3);
+
+  /* Display type — the loudest thing on any Contra-style page. */
+  --text-display-sm: clamp(2.25rem, 1.4rem + 3.4vw, 3.25rem);
+  --text-display: clamp(2.75rem, 1rem + 6.4vw, 5rem);
+  --text-display-lg: clamp(3.25rem, 0.5rem + 9vw, 6.5rem);
+
+  /*
+   * Motion. The browser's built-in easings are too weak to read as intentional,
+   * so `ease-out` and `ease-in-out` are redefined here and every existing
+   * `ease-out` utility in the codebase inherits the stronger curve.
+   *
+   * Lumen is a dashboard, so motion is crisp and short: entrances and exits use
+   * ease-out (fast start = responsive), things already on screen that move from
+   * A to B use ease-in-out. `ease-in` is never used — it delays the exact
+   * moment the user is watching.
+   */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
 }
 
 /*
- * Lumen is a dark-only product surface built on the Linear design system.
- * Both :root and .dark carry the same tokens so the theme is stable
- * regardless of the resolved color scheme.
+ * Lumen is a dark-only product surface. The palette is deliberately monochrome:
+ * white is the accent, so a white pill is always the primary action and colour
+ * only ever enters through *content* (severity, status, deltas, charts) — never
+ * through chrome. Both :root and .dark carry the same tokens so the theme is
+ * stable regardless of the resolved colour scheme.
  */
 :root,
 .dark {
-  --background: #010102; /* canvas */
-  --foreground: #f7f8f8; /* ink */
+  --background: #0a0a0a; /* canvas — marketing pages, page body */
+  --foreground: #ffffff; /* ink */
 
-  --card: #0f1011; /* surface-1 */
-  --card-foreground: #f7f8f8;
-  --popover: #141516; /* surface-2 */
-  --popover-foreground: #f7f8f8;
+  /* The dashboard's main panel. One step above the rail (#000) so the app reads
+   * as a lit surface contained inside the darker chrome. Cards sit above this. */
+  --app-surface: #0f0f0f;
 
-  --primary: #5e6ad2; /* lavender-blue */
-  --primary-foreground: #ffffff;
-  --primary-hover: #828fff; /* lighter lavender — hovered CTA */
-  --primary-focus: #5e69d1; /* focus-ring tint / pressed CTA */
+  --card: #171717; /* surface-1 */
+  --card-foreground: #ffffff;
+  --popover: #1c1c1c; /* surface-2 */
+  --popover-foreground: #ffffff;
 
-  --secondary: #0f1011; /* surface-1 */
-  --secondary-foreground: #f7f8f8;
+  --primary: #ffffff; /* white is the accent */
+  --primary-foreground: #0a0a0a;
+  --primary-hover: #e4e4e4; /* hovered CTA */
+  --primary-focus: #cfcfcf; /* pressed CTA */
 
-  --muted: #141516; /* surface-2 */
-  --muted-foreground: #8a8f98; /* ink-subtle */
+  --secondary: #1c1c1c; /* surface-2 */
+  --secondary-foreground: #ffffff;
 
-  --accent: #18191a; /* surface-3 */
-  --accent-foreground: #f7f8f8;
+  --muted: #161616; /* surface-1 */
+  --muted-foreground: #8f8f8f; /* ink-subtle */
 
-  --ink-muted: #d0d6e0;
-  --ink-subtle: #8a8f98;
-  --ink-tertiary: #62666d;
+  --accent: #232323; /* surface-3 */
+  --accent-foreground: #ffffff;
 
-  --success: #27a644;
-  --success-foreground: #ffffff;
-  --warning: #d9a441;
+  --ink-muted: #d4d4d4;
+  --ink-subtle: #8f8f8f;
+  --ink-tertiary: #5c5c5c;
 
-  --destructive: #e5484d;
+  /* Semantic colour — reserved for content, never for chrome. */
+  --success: #3fb950;
+  --success-foreground: #0a0a0a;
+  --warning: #e3b341;
+  --destructive: #f85149;
 
-  --border: #23252a; /* hairline */
-  --hairline-strong: #34343a;
-  --input: #23252a;
-  --ring: #5e69d1; /* primary-focus */
+  --border: #262626; /* hairline */
+  --hairline-strong: #3a3a3a;
+  --input: #262626;
+  --ring: #ffffff;
 
-  --chart-1: #5e6ad2;
-  --chart-2: #828fff;
-  --chart-3: #7a7fad;
-  --chart-4: #27a644;
-  --chart-5: #8a8f98;
+  /* Monochrome ramp — series read by luminance, not hue. */
+  --chart-1: #ffffff;
+  --chart-2: #a3a3a3;
+  --chart-3: #6b6b6b;
+  --chart-4: #454545;
+  --chart-5: #2e2e2e;
 
-  --radius: 0.75rem; /* 12px — Linear card radius */
+  /* 8px. Supabase-scale: sm=4 md=6 lg=8 xl=11 2xl=14. Radius is a whisper here,
+   * not a shape. Only avatars and status dots stay fully round. */
+  --radius: 0.5rem;
 
-  --sidebar: #010102; /* canvas */
-  --sidebar-foreground: #d0d6e0;
-  --sidebar-primary: #5e6ad2;
-  --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #141516; /* surface-2 */
-  --sidebar-accent-foreground: #f7f8f8;
-  --sidebar-border: #23252a;
-  --sidebar-ring: #5e69d1;
+  /* True black, one notch below the canvas, so the bordered main panel reads
+   * as a surface floating on the rail rather than a hairline in a flat field. */
+  --sidebar: #000000;
+  --sidebar-foreground: #d4d4d4;
+  --sidebar-primary: #ffffff;
+  --sidebar-primary-foreground: #0a0a0a;
+  --sidebar-accent: #1c1c1c; /* surface-2 */
+  --sidebar-accent-foreground: #ffffff;
+  --sidebar-border: #262626;
+  --sidebar-ring: #ffffff;
 }
 
 @layer base {
   * {
     @apply border-border outline-ring/50;
+  }
+
+  /* Dark, unobtrusive scrollbars — the default light chrome reads as a bug on
+   * a near-black surface. Firefox uses the standard props; Chromium falls back
+   * to ::-webkit-scrollbar, where the transparent border + background-clip
+   * trick insets the thumb without painting a track. */
+  * {
+    scrollbar-color: var(--hairline-strong) transparent;
+    scrollbar-width: thin;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background-color: var(--hairline-strong);
+    background-clip: content-box;
+    border: 3px solid transparent;
+    border-radius: 9999px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: var(--ink-tertiary);
+  }
+  ::-webkit-scrollbar-corner {
+    background: transparent;
   }
   body {
     font-feature-settings: "cv11", "ss01";
@@ -136,11 +195,11 @@
     @apply font-sans;
   }
 
-  /* Aggressive negative tracking on display type, per the design system. */
+  /* Display type is set tight; the bigger it gets, the tighter it tracks. */
   h1,
   h2,
   h3 {
-    letter-spacing: -0.02em;
+    letter-spacing: -0.03em;
   }
 }
 
@@ -149,34 +208,43 @@
 }
 
 /*
- * Faint white top-edge highlight on lifted panels — the "pixel rendered" feel
- * from the Linear design system. Used on cards and product-screenshot frames.
+ * Faint white top-edge highlight on lifted panels. Kept subtle — on a monochrome
+ * surface it reads as a light source rather than a border.
  */
 @utility panel-highlight {
-  box-shadow: inset 0 1px 0 0 rgb(255 255 255 / 0.05);
+  box-shadow: inset 0 1px 0 0 rgb(255 255 255 / 0.06);
 }
 
 /* Interactive card lift — hairline brightens and the panel rises a hair. */
 @utility card-interactive {
   transition:
     border-color 200ms ease,
+    background-color 200ms ease,
     transform 200ms ease,
     box-shadow 200ms ease;
 
   &:hover {
     border-color: var(--hairline-strong);
     box-shadow:
-      0 8px 24px -12px rgb(0 0 0 / 0.7),
-      inset 0 1px 0 0 rgb(255 255 255 / 0.05);
+      0 12px 32px -16px rgb(0 0 0 / 0.8),
+      inset 0 1px 0 0 rgb(255 255 255 / 0.06);
     transform: translateY(-2px);
   }
+}
+
+/*
+ * Contra's signature "sticker" chip — a small pill that sits on a surface with
+ * a hard edge and no fill, used for eyebrows and metadata.
+ */
+@utility chip {
+  @apply inline-flex items-center gap-2 rounded-md border border-hairline-strong px-2.5 py-1 font-medium text-ink-muted text-xs;
 }
 
 /* Section entrance — a restrained fade-and-rise for marketing content. */
 @keyframes rise-in {
   from {
     opacity: 0;
-    transform: translateY(12px);
+    transform: translateY(14px);
   }
   to {
     opacity: 1;
@@ -185,14 +253,26 @@
 }
 
 @utility rise-in {
-  animation: rise-in 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: rise-in 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
+/*
+ * Reduced motion means fewer and gentler animations, not zero. Opacity and
+ * colour transitions still aid comprehension, so they stay; anything that moves
+ * or scales an element is what gets dropped.
+ */
 @media (prefers-reduced-motion: reduce) {
   .rise-in {
     animation: none;
   }
   .card-interactive:hover {
     transform: none;
+  }
+  *,
+  *::before,
+  *::after {
+    transition-duration: 120ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
   }
 }

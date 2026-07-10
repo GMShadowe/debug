@@ -1,15 +1,40 @@
 "use client";
 
-import { Check, Copy, Eye, EyeSlash } from "@phosphor-icons/react/dist/ssr";
 import { useState } from "react";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
+import { Icon } from "@/components/ui/icon";
 import { maskApiKey } from "@/lib/format";
+import { CheckIcon, CopyIcon, EyeIcon, EyeOffIcon } from "@/lib/icons";
 
-export function ApiKeyField({ apiKey }: { apiKey: string }) {
-  const [revealed, setRevealed] = useState(false);
+/**
+ * Optionally controlled. The Install page shows the key in three places — this
+ * field, an `.env` line, and a script tag — and one eye must unmask all of them,
+ * so it lifts `revealed` up. Used bare (Settings) it keeps its own state.
+ */
+export function ApiKeyField({
+  apiKey,
+  revealed: revealedProp,
+  onRevealedChange,
+}: {
+  apiKey: string;
+  revealed?: boolean;
+  onRevealedChange?: (revealed: boolean) => void;
+}) {
+  const [internalRevealed, setInternalRevealed] = useState(false);
   const [copied, setCopied] = useState(false);
+
+  const revealed = revealedProp ?? internalRevealed;
+
+  function toggle() {
+    const next = !revealed;
+    if (onRevealedChange) {
+      onRevealedChange(next);
+    } else {
+      setInternalRevealed(next);
+    }
+  }
 
   async function copy() {
     await navigator.clipboard.writeText(apiKey);
@@ -25,15 +50,16 @@ export function ApiKeyField({ apiKey }: { apiKey: string }) {
       </code>
       <Button
         aria-label={revealed ? "Hide API key" : "Reveal API key"}
+        aria-pressed={revealed}
         className="size-9 rounded-md"
-        onClick={() => setRevealed((v) => !v)}
+        onClick={toggle}
         size="icon"
         variant="outline"
       >
         {revealed ? (
-          <EyeSlash className="size-4" />
+          <Icon className="size-4" icon={EyeOffIcon} />
         ) : (
-          <Eye className="size-4" />
+          <Icon className="size-4" icon={EyeIcon} />
         )}
       </Button>
       <Button
@@ -44,9 +70,13 @@ export function ApiKeyField({ apiKey }: { apiKey: string }) {
         variant="outline"
       >
         {copied ? (
-          <Check className="size-4 text-success" />
+          <Icon
+            className="size-4 text-success"
+            icon={CheckIcon}
+            strokeWidth={2.5}
+          />
         ) : (
-          <Copy className="size-4" />
+          <Icon className="size-4" icon={CopyIcon} />
         )}
       </Button>
     </div>

@@ -1,20 +1,15 @@
 "use client";
 
-import { Bell, CaretUpDown, Sparkle, UserCircle } from "@phosphor-icons/react";
-import { SignOut } from "@phosphor-icons/react/dist/ssr";
-import Link from "next/link";
-
 import { signOut } from "@/app/actions/auth";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuGroup,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Icon } from "@/components/ui/icon";
 import {
   SidebarMenu,
   SidebarMenuButton,
@@ -22,6 +17,7 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import { initials } from "@/lib/format";
+import { ChevronUpDownIcon, LogoutIcon } from "@/lib/icons";
 
 export interface NavUserData {
   avatar: string | null;
@@ -29,6 +25,12 @@ export interface NavUserData {
   name: string | null;
 }
 
+/**
+ * Account menu. It previously offered "Upgrade to Pro", "Account", and
+ * "Notifications" — the latter two linking to /dashboard/settings, a route that
+ * no longer exists, and none of the three doing anything. A menu of dead ends
+ * teaches people not to open the menu.
+ */
 export function NavUser({ user }: { user: NavUserData }) {
   const { isMobile } = useSidebar();
   const displayName = user.name ?? "Your account";
@@ -45,73 +47,51 @@ export function NavUser({ user }: { user: NavUserData }) {
               />
             }
           >
-            <Avatar className="size-8 rounded-lg">
+            <Avatar className="size-6 rounded-md">
               {user.avatar ? (
                 <AvatarImage alt={displayName} src={user.avatar} />
               ) : null}
-              <AvatarFallback className="rounded-lg">
+              <AvatarFallback className="rounded-md text-[10px]">
                 {initials(user.name ?? user.email)}
               </AvatarFallback>
             </Avatar>
-            <div className="grid flex-1 text-left text-sm leading-tight">
-              <span className="truncate font-medium">{displayName}</span>
-              <span className="truncate text-ink-subtle text-xs">
+            <div className="grid flex-1 text-left leading-tight">
+              <span className="truncate font-medium text-[13px]">
+                {displayName}
+              </span>
+              <span className="truncate text-[11px] text-ink-tertiary">
                 {user.email}
               </span>
             </div>
-            <CaretUpDown className="ml-auto size-4" />
+            <Icon
+              className="ml-auto size-3.5 text-ink-tertiary"
+              icon={ChevronUpDownIcon}
+            />
           </DropdownMenuTrigger>
+
           <DropdownMenuContent
             align="end"
-            className="w-56 rounded-lg"
+            className="w-56 rounded-md"
             side={isMobile ? "bottom" : "right"}
-            sideOffset={4}
+            sideOffset={6}
           >
-            <DropdownMenuLabel className="p-0 font-normal">
-              <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
-                <Avatar className="size-8 rounded-lg">
-                  {user.avatar ? (
-                    <AvatarImage alt={displayName} src={user.avatar} />
-                  ) : null}
-                  <AvatarFallback className="rounded-lg">
-                    {initials(user.name ?? user.email)}
-                  </AvatarFallback>
-                </Avatar>
-                <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-medium">{displayName}</span>
-                  <span className="truncate text-ink-subtle text-xs">
-                    {user.email}
-                  </span>
-                </div>
-              </div>
-            </DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuGroup>
-              <DropdownMenuItem>
-                <Sparkle className="text-primary" />
-                Upgrade to Pro
-              </DropdownMenuItem>
-            </DropdownMenuGroup>
-            <DropdownMenuSeparator />
-            <DropdownMenuGroup>
-              <DropdownMenuItem render={<Link href="/dashboard/settings" />}>
-                <UserCircle />
-                Account
-              </DropdownMenuItem>
-              <DropdownMenuItem render={<Link href="/dashboard/settings" />}>
-                <Bell />
-                Notifications
-              </DropdownMenuItem>
-            </DropdownMenuGroup>
+            <div className="px-2 py-1.5">
+              <p className="truncate font-medium text-[13px] text-foreground">
+                {displayName}
+              </p>
+              <p className="truncate text-[11px] text-ink-tertiary">
+                {user.email}
+              </p>
+            </div>
             <DropdownMenuSeparator />
             <form action={signOut}>
-              <button
-                className="flex w-full cursor-default items-center gap-2 rounded-sm px-2 py-1.5 text-left text-destructive text-sm outline-none hover:bg-destructive/10"
-                type="submit"
+              <DropdownMenuItem
+                className="w-full text-destructive"
+                render={<button type="submit" />}
               >
-                <SignOut className="size-4" />
+                <Icon className="size-3.5" icon={LogoutIcon} />
                 Sign out
-              </button>
+              </DropdownMenuItem>
             </form>
           </DropdownMenuContent>
         </DropdownMenu>
