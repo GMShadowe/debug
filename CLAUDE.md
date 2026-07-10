@@ -24,7 +24,8 @@ There is **no test runner configured**. The Husky `pre-commit` hook (`.husky/pre
 - **React 19** with RSC. `components.json` sets `"rsc": true` — default to Server Components; add `"use client"` only where interactivity requires it.
 - **Path alias**: `@/*` → `src/*`. Component aliases (from `components.json`): `@/components/ui`, `@/lib/utils`, `@/hooks`.
 - **Styling**: Tailwind CSS v4 (PostCSS-based, no `tailwind.config`; theme lives in `src/app/globals.css` via `@theme inline` + CSS variables). Dark mode is class-based (`@custom-variant dark`). Base color `neutral`.
-- **UI primitives**: shadcn/ui built on **@base-ui/react** (not Radix), style preset `base-lyra`. Icons come from **@phosphor-icons/react** (`iconLibrary: "phosphor"`) — use Phosphor, not Lucide.
+- **UI primitives**: shadcn/ui built on **@base-ui/react** (not Radix), style preset `base-lyra`.
+- **Icons**: app code uses **HugeIcons**. Import the `Icon` wrapper (`@/components/ui/icon`) and an alias from `@/lib/icons` — never `@hugeicons/core-free-icons` directly, so icon choices stay consistent. `components.json` still says `iconLibrary: "phosphor"` because shadcn has no HugeIcons option; newly-added shadcn components arrive with Phosphor icons and the `components/ui/*` scaffold (plus the marketing/auth pages) is still on Phosphor. Migrate those opportunistically; do not reach for Phosphor in new app code.
 - **`cn()` helper** (`src/lib/utils.ts`): `twMerge(clsx(...))` — use for all conditional className composition.
 - **Fonts** (`src/app/layout.tsx`): Geist Sans, Geist Mono, and JetBrains Mono loaded via `next/font/google` as CSS variables. Note `--font-mono` is the default body font and `--font-heading` maps to mono.
 - **Charts**: Recharts 3 (`src/components/ui/chart.tsx`).
