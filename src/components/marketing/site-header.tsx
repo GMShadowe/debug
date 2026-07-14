@@ -4,15 +4,17 @@ import { Logo } from "@/components/brand/logo";
 import { Button } from "@/components/ui/button";
 
 const NAV_LINKS = [
+  { href: "#why", label: "Why" },
   { href: "#how-it-works", label: "How it works" },
-  { href: "#features", label: "Features" },
   { href: "#widget", label: "Widget" },
+  { href: "#features", label: "Features" },
   { href: "#developers", label: "Developers" },
+  { href: "#integrations", label: "Integrations" },
 ];
 
 export function SiteHeader() {
   return (
-    <header className="sticky top-0 z-40 border-border/70 border-b bg-background/70 backdrop-blur-xl">
+    <header className="sticky top-0 z-40 border-border/70 border-b bg-background/80 backdrop-blur-md">
       <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-6">
         <Link className="transition-opacity hover:opacity-80" href="/">
           <Logo />
@@ -21,7 +23,7 @@ export function SiteHeader() {
         <nav className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-8 md:flex">
           {NAV_LINKS.map((link) => (
             <a
-              className="group relative text-ink-subtle text-sm transition-colors duration-150 hover:text-foreground"
+              className="group relative rounded-sm text-ink-subtle text-sm outline-none transition-colors duration-150 hover:text-foreground focus-visible:text-foreground focus-visible:ring-2 focus-visible:ring-ring/60 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
               href={link.href}
               key={link.label}
             >
