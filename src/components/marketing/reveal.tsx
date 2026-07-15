@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 type RevealVariant = "up" | "left" | "right" | "scale";
 
 interface RevealProps {
-  /** Element to render as — defaults to a div. */
+  /** Element to render as defaults to a div. */
   as?: ElementType;
   children: ReactNode;
   className?: string;
@@ -46,7 +46,7 @@ export function Reveal({
     }
 
     const prefersReduced = window.matchMedia(
-      "(prefers-reduced-motion: reduce)"
+      "(prefers-reduced-motion: reduce)",
     ).matches;
     if (prefersReduced) {
       node.classList.add("is-visible");
@@ -62,7 +62,7 @@ export function Reveal({
           }
         }
       },
-      { rootMargin: "0px 0px -10% 0px", threshold: 0.12 }
+      { rootMargin: "0px 0px -10% 0px", threshold: 0.12 },
     );
 
     observer.observe(node);

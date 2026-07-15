@@ -18,9 +18,18 @@ export function SmoothScroll({ children }: { children: ReactNode }) {
     }
 
     const lenis = new Lenis({
-      lerp: 0.12,
-      touchMultiplier: 1.6,
-      wheelMultiplier: 1,
+      // Duration + expo easing gives the heavy, buttery glide that reads as
+      // "premium" — momentum keeps carrying after the wheel stops instead of
+      // snapping to rest like a short lerp would.
+      duration: 1.4,
+      easing: (t) => Math.min(1, 1.001 - 2 ** (-10 * t)),
+      // Smooth momentum on touch too, so mobile matches the desktop feel.
+      syncTouch: true,
+      syncTouchLerp: 0.08,
+      touchMultiplier: 1.8,
+      // Let the inertia express itself on trackpads/wheels without feeling
+      // sluggish to start.
+      wheelMultiplier: 1.05,
     });
 
     let frame = 0;
@@ -43,7 +52,7 @@ export function SmoothScroll({ children }: { children: ReactNode }) {
       const el = document.querySelector(href);
       if (el) {
         event.preventDefault();
-        lenis.scrollTo(el as HTMLElement, { offset: -80 });
+        lenis.scrollTo(el as HTMLElement, { duration: 1.6, offset: -80 });
       }
     };
 
