@@ -7,6 +7,12 @@
       "skillPath": "skills/awwwards/SKILL.md",
       "computedHash": "4d10d8a5120bd962f862a57ad1581c499dad7ce568d64dd130ae0a5fe5e32881"
     },
+    "gsap-framer-scroll-animation": {
+      "source": "github/awesome-copilot",
+      "sourceType": "github",
+      "skillPath": "skills/gsap-framer-scroll-animation/SKILL.md",
+      "computedHash": "e6a4caf23b818ffc5185d51339e941ca783944b6693da877fc1206693b2dff66"
+    },
     "scroll-experience": {
       "source": "sickn33/antigravity-awesome-skills",
       "sourceType": "github",

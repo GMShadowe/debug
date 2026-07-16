@@ -393,6 +393,162 @@
   animation: ticker-enter 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
+/*
+ * Native scroll-driven animations (CSS ScrollTimeline / ViewTimeline),
+ * progressively enhanced: Chrome/Edge 115+ and Safari 18.4+ run these on the
+ * compositor with zero JS; elsewhere the rAF drivers in <ScrollProgress> and
+ * <Reveal> keep working. Gated on prefers-reduced-motion.
+ */
+@media (prefers-reduced-motion: no-preference) {
+  /* Reading progress — scrubbed by root scroll, no scroll listener at all. */
+  @supports (animation-timeline: scroll(root)) {
+    .scroll-progress-native {
+      animation: grow-progress linear both;
+      animation-timeline: scroll(root block);
+    }
+  }
+
+  /*
+   * Scrubbed entrance for the product islands: they rise and sharpen in step
+   * with their journey into the viewport, and scrub back out when the reader
+   * reverses. Distinct from .reveal (a one-shot transition on other nodes).
+   */
+  @supports (animation-timeline: view()) {
+    .view-rise {
+      animation: view-rise linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 85%;
+    }
+  }
+}
+
+@keyframes grow-progress {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes view-rise {
+  from {
+    opacity: 0.35;
+    transform: translateY(30px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/*
+ * Film grain over dark scenes — the same SVG noise as the boot screen,
+ * tiled at low opacity so gradients never band.
+ */
+@utility noise-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: 0.035;
+}
+
+/* Soft vignette that pools light toward the center of a scene. */
+@utility vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    120% 90% at 50% 30%,
+    transparent 55%,
+    rgb(0 0 0 / 0.5) 100%
+  );
+}
+
+/*
+ * Aurora blobs — slow-drifting lavender blooms behind the hero. Blur is
+ * rendered once per layer; only transform animates, so the drift stays on
+ * the compositor.
+ */
+@keyframes aurora-drift-a {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(60px, 40px, 0) scale(1.15);
+  }
+}
+
+@keyframes aurora-drift-b {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1.1);
+  }
+  50% {
+    transform: translate3d(-70px, -30px, 0) scale(0.95);
+  }
+}
+
+@utility aurora-blob {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(70px);
+  backface-visibility: hidden;
+}
+
+@utility aurora-a {
+  animation: aurora-drift-a 16s ease-in-out infinite;
+}
+
+@utility aurora-b {
+  animation: aurora-drift-b 19s ease-in-out infinite;
+}
+
+/* Gradient display text — foreground fading toward lavender. */
+@utility text-gradient {
+  color: transparent;
+  background: linear-gradient(135deg, #f4f5f6 30%, #828fff 90%);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+/*
+ * Mouse-reactive glow card — a radial highlight tracks the cursor via
+ * --gx/--gy custom properties written by <GlowCard>, and the border warms
+ * where the light lands.
+ */
+@utility glow-card {
+  position: relative;
+  overflow: hidden;
+  background: var(--card);
+  border: 1px solid var(--border);
+  transition: border-color 0.3s ease;
+
+  &::before {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    content: "";
+    background: radial-gradient(
+      320px circle at var(--gx, 50%) var(--gy, 50%),
+      color-mix(in oklab, var(--primary) 13%, transparent),
+      transparent 70%
+    );
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  &:hover {
+    border-color: color-mix(in oklab, var(--primary) 35%, var(--border));
+  }
+
+  &:hover::before {
+    opacity: 1;
+  }
+}
+
 /* Context strip — an endless drift of the metadata chips Lumen captures. */
 @keyframes strip-drift {
   from {

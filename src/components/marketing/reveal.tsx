@@ -46,7 +46,7 @@ export function Reveal({
     }
 
     const prefersReduced = window.matchMedia(
-      "(prefers-reduced-motion: reduce)",
+      "(prefers-reduced-motion: reduce)"
     ).matches;
     if (prefersReduced) {
       node.classList.add("is-visible");
@@ -62,7 +62,7 @@ export function Reveal({
           }
         }
       },
-      { rootMargin: "0px 0px -10% 0px", threshold: 0.12 },
+      { rootMargin: "0px 0px -10% 0px", threshold: 0.12 }
     );
 
     observer.observe(node);

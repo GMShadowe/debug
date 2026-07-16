@@ -1,12 +1,19 @@
 "use client";
 
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Lenis from "lenis";
 import { type ReactNode, useEffect } from "react";
 
+gsap.registerPlugin(ScrollTrigger);
+
 /**
- * Initializes Lenis smooth scrolling for the marketing surface and wires up
- * in-page anchor links to animate through Lenis instead of jumping. Respects
- * the user's reduced-motion preference by not mounting at all.
+ * Initializes Lenis smooth scrolling for the marketing surface, driven by
+ * GSAP's ticker so ScrollTrigger animations stay perfectly in sync with the
+ * smoothed scroll (lenis.raf on the ticker, ScrollTrigger.update on scroll,
+ * lagSmoothing off — the canonical integration). Also wires in-page anchor
+ * links to animate through Lenis instead of jumping. Respects the user's
+ * reduced-motion preference by not mounting at all.
  */
 export function SmoothScroll({ children }: { children: ReactNode }) {
   useEffect(() => {
@@ -32,12 +39,11 @@ export function SmoothScroll({ children }: { children: ReactNode }) {
       wheelMultiplier: 1.05,
     });
 
-    let frame = 0;
-    const raf = (time: number) => {
-      lenis.raf(time);
-      frame = requestAnimationFrame(raf);
-    };
-    frame = requestAnimationFrame(raf);
+    // Keep ScrollTrigger's world model in sync with the smoothed scroll.
+    lenis.on("scroll", ScrollTrigger.update);
+    const raf = (time: number) => lenis.raf(time * 1000);
+    gsap.ticker.add(raf);
+    gsap.ticker.lagSmoothing(0);
 
     const handleAnchorClick = (event: MouseEvent) => {
       const target = event.target as HTMLElement;
@@ -59,8 +65,8 @@ export function SmoothScroll({ children }: { children: ReactNode }) {
     document.addEventListener("click", handleAnchorClick);
 
     return () => {
-      cancelAnimationFrame(frame);
       document.removeEventListener("click", handleAnchorClick);
+      gsap.ticker.remove(raf);
       lenis.destroy();
     };
   }, []);

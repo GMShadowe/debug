@@ -4,8 +4,10 @@ import { useEffect, useRef } from "react";
 
 /**
  * A thin accent bar pinned to the top of the viewport that fills as the page
- * scrolls. Reads scroll position inside a rAF-throttled listener and drives a
- * cheap `scaleX` transform — no layout work, no re-renders.
+ * scrolls. Where the browser supports CSS scroll-driven animations the
+ * `.scroll-progress-native` class scrubs it on the compositor with no
+ * listener at all; otherwise a rAF-throttled scroll listener drives the same
+ * cheap `scaleX` transform.
  */
 export function ScrollProgress() {
   const ref = useRef<HTMLDivElement>(null);
@@ -14,6 +16,9 @@ export function ScrollProgress() {
     const node = ref.current;
     if (!node) {
       return;
+    }
+    if (CSS.supports("animation-timeline: scroll(root)")) {
+      return; // The CSS timeline owns the bar.
     }
 
     let frame = 0;
@@ -42,7 +47,7 @@ export function ScrollProgress() {
   return (
     <div
       aria-hidden="true"
-      className="pointer-events-none fixed inset-x-0 top-0 z-50 h-0.5 origin-left scale-x-0 bg-gradient-to-r from-primary/40 via-primary to-primary-hover"
+      className="scroll-progress-native pointer-events-none fixed inset-x-0 top-0 z-50 h-0.5 origin-left scale-x-0 bg-gradient-to-r from-primary/40 via-primary to-primary-hover"
       ref={ref}
     />
   );

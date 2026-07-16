@@ -2,7 +2,6 @@ import {
   ArrowRight,
   Camera,
   ChartLineUp,
-  Check,
   Code,
   DiscordLogo,
   Envelope,
@@ -15,17 +14,19 @@ import {
   PlugsConnected,
   PuzzlePiece,
   ShieldCheck,
-  X,
 } from "@phosphor-icons/react/dist/ssr";
 import Link from "next/link";
-import type { ComponentType, CSSProperties, ReactNode } from "react";
+import type { ComponentType, ReactNode } from "react";
 
 import { BrowserFrame } from "@/components/marketing/browser-frame";
 import { CodeTyper } from "@/components/marketing/code-typer";
 import { Faq } from "@/components/marketing/faq";
+import { GlowCard } from "@/components/marketing/glow-card";
+import { GsapFX } from "@/components/marketing/gsap-fx";
+import { HeroFragments } from "@/components/marketing/hero-fragments";
 import { Magnetic } from "@/components/marketing/magnetic";
 import { PageIntro } from "@/components/marketing/page-intro";
-import { DashboardMock, WidgetMock } from "@/components/marketing/product-mock";
+import { DashboardMock } from "@/components/marketing/product-mock";
 import { ReportTicker } from "@/components/marketing/report-ticker";
 import { Reveal } from "@/components/marketing/reveal";
 import { ScrollFX } from "@/components/marketing/scroll-fx";
@@ -33,6 +34,9 @@ import { ScrollProgress } from "@/components/marketing/scroll-progress";
 import { SiteFooter } from "@/components/marketing/site-footer";
 import { SiteHeader } from "@/components/marketing/site-header";
 import { SmoothScroll } from "@/components/marketing/smooth-scroll";
+import { StickyCompare } from "@/components/marketing/sticky-compare";
+import { StickyCta } from "@/components/marketing/sticky-cta";
+import { StickyDemo } from "@/components/marketing/sticky-demo";
 import { Button } from "@/components/ui/button";
 
 interface IconType {
@@ -81,41 +85,6 @@ const FEATURES: {
     icon: PuzzlePiece,
     title: "Built to extend",
   },
-];
-
-const STEPS = [
-  {
-    description:
-      "Drop a single script tag into your site. The floating button appears instantly, with no build step.",
-    number: "01",
-    title: "Install the widget",
-  },
-  {
-    description:
-      "Anyone can grab a screenshot and describe the issue in a few seconds, right where it happened.",
-    number: "02",
-    title: "Visitors report bugs",
-  },
-  {
-    description:
-      "Reports land in Lumen with full context, ready to sort, assign, and resolve.",
-    number: "03",
-    title: "Triage in your dashboard",
-  },
-];
-
-const OLD_WAY = [
-  "“It’s broken” with no way to reproduce it",
-  "Screenshots pasted into three different chat apps",
-  "Endless back-and-forth to pin down the browser",
-  "Bugs that slip through until a customer churns",
-];
-
-const NEW_WAY = [
-  "A pixel-accurate screenshot on every report",
-  "Browser, OS, and viewport captured automatically",
-  "One triage board, sorted by severity and status",
-  "Fixed before it ever reaches your churn rate",
 ];
 
 const INTEGRATIONS: { icon: ComponentType<IconType>; name: string }[] = [
@@ -236,6 +205,7 @@ export default function LandingPage() {
         <PageIntro />
         <ScrollProgress />
         <ScrollFX />
+        <GsapFX />
         <div className="flex min-h-dvh flex-col">
           <a
             className="sr-only rounded-md bg-card px-3 py-2 text-foreground text-sm ring-2 ring-ring focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50"
@@ -246,12 +216,17 @@ export default function LandingPage() {
           <SiteHeader />
 
           <main className="flex-1" id="main-content">
-            {/* Hero — massive editorial headline over a dark product island */}
+            {/* SCENE 1 — the signal. Massive type over a living backdrop. */}
             <section className="relative overflow-hidden" id="top">
               <div
                 aria-hidden="true"
-                className="grid-backdrop pointer-events-none absolute inset-x-0 top-0 h-[640px]"
-              />
+                className="pointer-events-none absolute inset-x-0 top-0 h-[720px]"
+              >
+                <div className="aurora-blob aurora-a top-[-160px] left-[6%] size-[440px] bg-primary/20" />
+                <div className="aurora-blob aurora-b top-[-80px] right-[4%] size-[380px] bg-[#828fff]/12" />
+                <div className="grid-backdrop absolute inset-0" />
+              </div>
+              <div className="noise-overlay" />
 
               <div className="relative mx-auto max-w-6xl px-6 pt-32 pb-20 sm:pt-40">
                 <div data-fade="">
@@ -320,27 +295,28 @@ export default function LandingPage() {
                     className="rise-in mt-6 font-mono text-ink-subtle text-xs"
                     style={{ animationDelay: "520ms" }}
                   >
-                    No credit card · Live in under a minute
+                    No credit card · 1 script tag · 0 kb added to your bundle
                   </p>
                 </div>
 
-                {/* The product — a dark island on the light canvas */}
-                <div className="parallax mt-14" data-parallax="60">
+                {/* The product, orbited by floating fragments of the flow */}
+                <div className="parallax relative mt-14" data-parallax="60">
                   <div className="rise-in" style={{ animationDelay: "300ms" }}>
-                    <div className="panel-dark">
+                    <div className="panel-dark view-rise relative">
                       <BrowserFrame
-                        className="shadow-[0_32px_64px_-24px_rgb(0_0_0/0.35)]"
+                        className="shadow-[0_32px_64px_-24px_rgb(0_0_0/0.55)]"
                         url="app.lumen.dev/dashboard"
                       >
                         <DashboardMock />
                       </BrowserFrame>
+                      <HeroFragments />
                     </div>
                   </div>
                 </div>
               </div>
             </section>
 
-            {/* Live wire — reports streaming in, the product switched on */}
+            {/* SCENE 2 — the live wire. The product is switched on. */}
             <section className="border-border border-y bg-card/50">
               <div className="mx-auto grid max-w-6xl items-center gap-8 px-6 py-10 lg:grid-cols-[minmax(0,300px)_1fr]">
                 <div>
@@ -356,157 +332,88 @@ export default function LandingPage() {
               </div>
             </section>
 
-            {/* Chapter 01 — the problem */}
-            <Section id="why">
-              <Reveal className="mx-auto max-w-3xl text-center">
-                <Eyebrow chapter="01">Why Lumen</Eyebrow>
-                <h2 className="mt-4 text-balance text-display-2 text-foreground tracking-[-0.03em]">
-                  Stop reproducing. Start <em>fixing</em>.
-                </h2>
-                <p className="mt-4 text-ink-subtle leading-relaxed">
-                  The gap between a bug happening and you understanding it is
-                  where hours disappear.
-                </p>
-              </Reveal>
-
-              <div className="mt-14 grid gap-5 md:grid-cols-2">
-                <Reveal variant="left">
-                  <div className="h-full rounded-xl border border-border bg-card p-7">
-                    <span className="font-mono text-ink-subtle text-xs uppercase tracking-[0.12em]">
-                      The old way
-                    </span>
-                    <ul className="mt-6 space-y-4">
-                      {OLD_WAY.map((item) => (
-                        <li
-                          className="flex items-start gap-3 text-ink-muted text-sm leading-relaxed"
-                          key={item}
-                        >
-                          <span className="mt-0.5 grid size-5 shrink-0 place-items-center rounded-full bg-destructive/12 text-destructive">
-                            <X
-                              aria-hidden="true"
-                              className="size-3"
-                              weight="bold"
-                            />
-                          </span>
-                          {item}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </Reveal>
-
-                <Reveal delay={90} variant="right">
-                  <div className="panel-highlight h-full rounded-xl border border-primary/30 bg-primary/[0.07] p-7">
-                    <span className="font-mono text-primary-hover text-xs uppercase tracking-[0.12em]">
-                      The Lumen way
-                    </span>
-                    <ul className="mt-6 space-y-4">
-                      {NEW_WAY.map((item) => (
-                        <li
-                          className="flex items-start gap-3 text-foreground text-sm leading-relaxed"
-                          key={item}
-                        >
-                          <span className="mt-0.5 grid size-5 shrink-0 place-items-center rounded-full bg-primary/20 text-primary-hover">
-                            <Check
-                              aria-hidden="true"
-                              className="size-3"
-                              weight="bold"
-                            />
-                          </span>
-                          {item}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </Reveal>
-              </div>
-            </Section>
-
-            {/* Chapter 02 — the path, dealt as a sticky deck */}
-            <Section id="how-it-works">
-              <Reveal className="max-w-2xl">
-                <Eyebrow chapter="02">How it works</Eyebrow>
-                <h2 className="mt-4 text-balance text-display-2 text-foreground tracking-[-0.03em]">
-                  From report to resolved in three steps
-                </h2>
-              </Reveal>
-
-              <div className="mt-14">
-                {STEPS.map((step, index) => (
-                  <div
-                    className="stack-card"
-                    key={step.number}
-                    style={
-                      { "--stack-offset": `${index * 28}px` } as CSSProperties
-                    }
-                  >
-                    <div className="mb-8 grid min-h-[15rem] content-center gap-4 rounded-2xl border border-border bg-card p-8 shadow-[0_16px_48px_-28px_rgb(0_0_0/0.35)] sm:grid-cols-[minmax(0,180px)_1fr] sm:items-center sm:gap-10 sm:p-12">
-                      <span
-                        aria-hidden="true"
-                        className="font-bold text-[clamp(3rem,6vw,5rem)] text-hairline-strong tabular-nums leading-none tracking-[-0.04em]"
-                      >
-                        {step.number}
-                      </span>
-                      <div>
-                        <h3 className="font-semibold text-2xl text-foreground tracking-[-0.02em]">
-                          {step.title}
-                        </h3>
-                        <p className="mt-3 max-w-xl text-ink-subtle leading-relaxed">
-                          {step.description}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </Section>
-
-            {/* Chapter 03 — the tool */}
-            <Section id="widget">
-              <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
-                <Reveal variant="left">
-                  <Eyebrow chapter="03">The widget</Eyebrow>
+            {/* SCENE 3 — the problem, then the turn. */}
+            <section id="why">
+              <div className="mx-auto max-w-3xl px-6 pt-24 pb-8 text-center sm:pt-32">
+                <Reveal>
+                  <Eyebrow chapter="01">Why Lumen</Eyebrow>
                   <h2 className="mt-4 text-balance text-display-2 text-foreground tracking-[-0.03em]">
-                    Reporting that meets users where they are
+                    Stop reproducing. Start <em>fixing</em>.
                   </h2>
-                  <p className="mt-4 max-w-md text-ink-muted leading-relaxed">
-                    A single floating button, always within reach. Visitors
-                    capture the screen, mark severity, and add a note. It lands
-                    on your board with the full environment attached.
-                  </p>
-                  <ul className="mt-8 space-y-3">
-                    {[
-                      "Annotated screenshot capture",
-                      "Automatic environment metadata",
-                      "Themeable to match your product",
-                    ].map((item) => (
-                      <li
-                        className="flex items-center gap-3 text-foreground text-sm"
-                        key={item}
-                      >
-                        <span className="grid size-4 shrink-0 place-items-center rounded-full bg-foreground/10">
-                          <span className="size-1.5 rounded-full bg-foreground" />
-                        </span>
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
                 </Reveal>
+                <p
+                  className="mt-8 text-pretty text-foreground text-xl leading-relaxed sm:text-2xl"
+                  data-words=""
+                >
+                  The gap between a bug happening and you understanding it is
+                  where the hours disappear. Lumen closes that gap at the moment
+                  the bug is seen.
+                </p>
+              </div>
+              <StickyCompare />
+            </section>
 
-                <div className="parallax" data-parallax="60">
-                  <Reveal delay={100} variant="right">
-                    <div className="panel-dark">
-                      <BrowserFrame
-                        className="shadow-[0_32px_64px_-24px_rgb(0_0_0/0.35)]"
-                        url="acme.com"
-                      >
-                        <WidgetMock />
-                      </BrowserFrame>
+            {/* SCENE 4 — the loop. Preview holds still, the story scrolls. */}
+            <section id="how-it-works">
+              <StickyDemo />
+            </section>
+
+            {/* SCENE 5 — the craft. The snippet types itself into the page. */}
+            <section
+              className="relative h-[200vh]"
+              data-code-scene=""
+              id="developers"
+            >
+              <div className="sticky top-0 flex min-h-dvh items-center">
+                <div className="mx-auto w-full max-w-6xl px-6">
+                  <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
+                    <div className="order-2 lg:order-1">
+                      <CodeTyper
+                        className="panel-dark view-rise shadow-[0_32px_64px_-24px_rgb(0_0_0/0.55)]"
+                        code={SNIPPET_TEXT}
+                        filename="index.html"
+                        tokens={SNIPPET_TOKENS}
+                      />
                     </div>
-                  </Reveal>
+
+                    <Reveal className="order-1 lg:order-2" variant="right">
+                      <Eyebrow chapter="03">Developer experience</Eyebrow>
+                      <h2 className="mt-4 text-balance text-display-2 text-foreground tracking-[-0.03em]">
+                        One tag. Zero <em>dependencies</em>.
+                      </h2>
+                      <p
+                        className="mt-4 max-w-md text-ink-muted leading-relaxed"
+                        data-words=""
+                      >
+                        No SDK to bundle, no framework to fight. Paste the
+                        snippet, ship it, and reports start flowing. Everything
+                        else is typed and queryable through a clean API.
+                      </p>
+                      <div className="mt-6 flex flex-wrap gap-2">
+                        {[
+                          "REST API",
+                          "Webhooks",
+                          "TypeScript types",
+                          "RLS",
+                        ].map((tag) => (
+                          <span
+                            className="inline-flex items-center gap-1.5 rounded-full border border-hairline-strong bg-card px-2.5 py-1 font-mono text-[11px] text-ink-subtle"
+                            key={tag}
+                          >
+                            <Code
+                              aria-hidden="true"
+                              className="size-3 text-primary-hover"
+                              weight="bold"
+                            />
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                    </Reveal>
+                  </div>
                 </div>
               </div>
-            </Section>
+            </section>
 
             {/* Context strip — everything captured with every report */}
             <section
@@ -551,7 +458,7 @@ export default function LandingPage() {
               </div>
             </section>
 
-            {/* Chapter 04 — the upside */}
+            {/* SCENE 6 — the arsenal. Mouse-reactive glow cards. */}
             <Section id="features">
               <div className="grid gap-12 lg:grid-cols-[minmax(0,340px)_minmax(0,1fr)] lg:gap-16">
                 <Reveal
@@ -568,129 +475,35 @@ export default function LandingPage() {
                   </p>
                 </Reveal>
 
-                <div className="grid grid-cols-1 gap-px overflow-hidden rounded-xl border border-border bg-border sm:grid-cols-2">
+                <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                   {FEATURES.map((feature, index) => (
                     <Reveal
                       as="div"
-                      className="group bg-background p-6 transition-colors duration-200 hover:bg-card"
                       delay={(index % 2) * 80}
                       key={feature.title}
                     >
-                      <div className="grid size-9 place-items-center rounded-lg border border-border bg-card text-foreground transition-colors duration-200 group-hover:border-hairline-strong">
-                        <feature.icon
-                          aria-hidden="true"
-                          className="size-4"
-                          weight="bold"
-                        />
-                      </div>
-                      <h3 className="mt-4 font-semibold text-base text-foreground">
-                        {feature.title}
-                      </h3>
-                      <p className="mt-1.5 text-ink-subtle text-sm leading-relaxed">
-                        {feature.description}
-                      </p>
+                      <GlowCard className="h-full rounded-xl p-6">
+                        <div className="grid size-9 place-items-center rounded-lg border border-border bg-background text-primary-hover">
+                          <feature.icon
+                            aria-hidden="true"
+                            className="size-4"
+                            weight="bold"
+                          />
+                        </div>
+                        <h3 className="mt-4 font-semibold text-base text-foreground">
+                          {feature.title}
+                        </h3>
+                        <p className="mt-1.5 text-ink-subtle text-sm leading-relaxed">
+                          {feature.description}
+                        </p>
+                      </GlowCard>
                     </Reveal>
                   ))}
                 </div>
               </div>
             </Section>
 
-            {/* Chapter 05 — the setup. The snippet types itself as you scroll. */}
-            <section
-              className="relative h-[200vh]"
-              data-code-scene=""
-              id="developers"
-            >
-              <div className="sticky top-0 flex min-h-dvh items-center">
-                <div className="mx-auto w-full max-w-6xl px-6">
-                  <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
-                    <div className="order-2 lg:order-1">
-                      <CodeTyper
-                        className="panel-dark shadow-[0_32px_64px_-24px_rgb(0_0_0/0.35)]"
-                        code={SNIPPET_TEXT}
-                        filename="index.html"
-                        tokens={SNIPPET_TOKENS}
-                      />
-                    </div>
-
-                    <Reveal className="order-1 lg:order-2" variant="right">
-                      <Eyebrow chapter="05">Developer experience</Eyebrow>
-                      <h2 className="mt-4 text-balance text-display-2 text-foreground tracking-[-0.03em]">
-                        One tag. Zero dependencies.
-                      </h2>
-                      <p className="mt-4 max-w-md text-ink-muted leading-relaxed">
-                        No SDK to bundle, no framework to fight. Paste the
-                        snippet, ship it, and reports start flowing. Everything
-                        else is typed and queryable through a clean API.
-                      </p>
-                      <div className="mt-6 flex flex-wrap gap-2">
-                        {[
-                          "REST API",
-                          "Webhooks",
-                          "TypeScript types",
-                          "RLS",
-                        ].map((tag) => (
-                          <span
-                            className="inline-flex items-center gap-1.5 rounded-full border border-hairline-strong bg-card px-2.5 py-1 font-mono text-[11px] text-ink-subtle"
-                            key={tag}
-                          >
-                            <Code
-                              aria-hidden="true"
-                              className="size-3 text-foreground"
-                              weight="bold"
-                            />
-                            {tag}
-                          </span>
-                        ))}
-                      </div>
-                    </Reveal>
-                  </div>
-                </div>
-              </div>
-            </section>
-
-            {/* Chapter 06 — the reach */}
-            <Section id="integrations">
-              <div className="grid gap-12 lg:grid-cols-[minmax(0,340px)_minmax(0,1fr)] lg:gap-16">
-                <Reveal
-                  className="lg:sticky lg:top-24 lg:self-start"
-                  variant="left"
-                >
-                  <Eyebrow chapter="06">Integrations</Eyebrow>
-                  <h2 className="mt-4 text-balance text-display-2 text-foreground tracking-[-0.03em]">
-                    Plays nicely with your stack
-                  </h2>
-                  <p className="mt-4 text-ink-subtle leading-relaxed">
-                    Route reports wherever your team already works. No glue code
-                    required.
-                  </p>
-                </Reveal>
-
-                <div className="grid grid-cols-2 gap-px overflow-hidden rounded-xl border border-border bg-border sm:grid-cols-4">
-                  {INTEGRATIONS.map((integration, index) => {
-                    return (
-                      <Reveal
-                        key={integration.name}
-                        as="div"
-                        className="group flex flex-col items-center gap-3 bg-background px-4 py-8 transition-colors duration-200 hover:bg-card"
-                        delay={(index % 4) * 60}
-                        variant="scale"
-                      >
-                        <integration.icon
-                          aria-hidden="true"
-                          className="size-7 text-ink-subtle transition-colors duration-200 group-hover:text-foreground"
-                        />
-                        <span className="text-foreground text-sm">
-                          {integration.name}
-                        </span>
-                      </Reveal>
-                    );
-                  })}
-                </div>
-              </div>
-            </Section>
-
-            {/* The numbers — a full-bleed dark band */}
+            {/* SCENE 7 — the proof. Numbers, then the stack it plays with. */}
             <section className="panel-dark border-border border-y bg-background">
               <div className="mx-auto grid max-w-6xl grid-cols-2 gap-px overflow-hidden bg-border md:grid-cols-4">
                 {METRICS.map((metric, index) => (
@@ -709,9 +522,25 @@ export default function LandingPage() {
                   </Reveal>
                 ))}
               </div>
+              <div className="border-border border-t">
+                <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-center gap-x-8 gap-y-4 px-6 py-8">
+                  <span className="font-mono text-[11px] text-ink-subtle uppercase tracking-[0.14em]">
+                    Routes to your stack
+                  </span>
+                  {INTEGRATIONS.map((integration) => (
+                    <span
+                      className="flex items-center gap-2 text-ink-subtle text-sm transition-colors duration-200 hover:text-foreground"
+                      key={integration.name}
+                    >
+                      <integration.icon aria-hidden="true" className="size-5" />
+                      {integration.name}
+                    </span>
+                  ))}
+                </div>
+              </div>
             </section>
 
-            {/* FAQ */}
+            {/* SCENE 8 — the questions. */}
             <Section id="faq">
               <div className="grid gap-12 lg:grid-cols-[minmax(0,340px)_minmax(0,1fr)] lg:gap-16">
                 <Reveal
@@ -734,46 +563,8 @@ export default function LandingPage() {
               </div>
             </Section>
 
-            {/* The close — a dark island finale */}
-            <section className="mx-auto max-w-6xl px-6 pb-28" id="arrive">
-              <Reveal
-                className="panel-dark panel-highlight relative overflow-hidden rounded-2xl border border-border bg-background px-8 py-20 text-center shadow-[0_48px_96px_-32px_rgb(0_0_0/0.45)] sm:px-16"
-                variant="scale"
-              >
-                <div
-                  aria-hidden="true"
-                  className="hero-glow parallax pointer-events-none absolute inset-x-0 top-0 h-72"
-                  data-parallax="90"
-                />
-                <div className="relative">
-                  <h2 className="mx-auto max-w-2xl text-balance text-display-2 text-foreground tracking-[-0.03em]">
-                    Put Lumen on your site <em>today</em>.
-                  </h2>
-                  <p className="mx-auto mt-4 max-w-md text-ink-muted leading-relaxed">
-                    Create a project, paste one script tag, and the first report
-                    can arrive within the minute. Free while in early access.
-                  </p>
-                  <div className="mt-8 flex justify-center">
-                    <Button
-                      className="group/button h-11 gap-1.5 rounded-lg px-5 text-sm"
-                      nativeButton={false}
-                      render={
-                        <Link href="/auth">
-                          Get started free
-                          <ArrowRight
-                            aria-hidden="true"
-                            className="size-4 transition-transform group-hover/button:translate-x-0.5"
-                          />
-                        </Link>
-                      }
-                    />
-                  </div>
-                  <p className="mt-5 font-mono text-ink-subtle text-xs">
-                    No credit card required
-                  </p>
-                </div>
-              </Reveal>
-            </section>
+            {/* SCENE 9 — arrival. The stage grows to meet you. */}
+            <StickyCta />
           </main>
 
           <SiteFooter />
