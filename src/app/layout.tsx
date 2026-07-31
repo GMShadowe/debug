@@ -5,7 +5,6 @@ import {
   Instrument_Serif,
   Inter,
   JetBrains_Mono,
-  Space_Grotesk,
 } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
@@ -20,11 +19,6 @@ const inter = Inter({
   style: ["normal", "italic"],
   subsets: ["latin"],
   variable: "--font-inter",
-});
-
-const spaceGrotesk = Space_Grotesk({
-  subsets: ["latin"],
-  variable: "--font-space-grotesk",
 });
 
 const instrumentSerif = Instrument_Serif({
@@ -61,12 +55,11 @@ export default function RootLayout({
   return (
     <html
       className={cn(
-        "dark intro-playing h-full",
+        "dark h-full",
         geistSans.variable,
         geistMono.variable,
         jetbrainsMono.variable,
         inter.variable,
-        spaceGrotesk.variable,
         instrumentSerif.variable
       )}
       lang="en"

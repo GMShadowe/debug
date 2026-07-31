@@ -65,14 +65,9 @@
  * Lumen is a dark-only product surface built on the Linear design system.
  * Both :root and .dark carry the same tokens so the theme is stable
  * regardless of the resolved color scheme.
- *
- * `.theme-landing .panel-dark` re-enters this exact token set: on the light
- * marketing canvas, product mocks / code / metric bands render as dark
- * "islands" of the real product theme.
  */
 :root,
-.dark,
-.theme-landing .panel-dark {
+.dark {
   --background: #010102; /* canvas */
   --foreground: #f7f8f8; /* ink */
 
@@ -129,91 +124,171 @@
 }
 
 /*
- * Marketing theme — scoped to the landing page. A rich dark canvas one step
- * lifted off the product's black, Inter body + Space Grotesk display +
- * Instrument Serif italic accents, with the lavender brand accent back at
- * full strength. `.panel-dark` islands still re-enter the exact product
- * tokens, so mocks read as the real (slightly deeper) app.
+ * ---------------------------------------------------------------------------
+ * MARKETING THEME — paper
+ * ---------------------------------------------------------------------------
+ * The landing page is a warm near-white sheet with near-black ink: an
+ * editorial canvas, not a product surface. The whole page is built from flat
+ * fills and 1px hairlines. There are deliberately NO decorative gradients
+ * anywhere; depth comes from contrast, scale and shadow instead.
+ *
+ * The accent is darkened from the product's #5e6ad2 to #4750bf so white CTA
+ * text clears AA on a light canvas, and hover goes DARKER (the inverse of the
+ * dark product theme, where hover lightens).
  */
 .theme-landing {
-  --background: #08090a; /* canvas */
-  --foreground: #f4f5f6;
+  --background: #f4f3f0; /* paper */
+  --foreground: #0b0c0e; /* ink */
 
-  --card: #101113;
-  --card-foreground: #f4f5f6;
-  --popover: #16171a;
-  --popover-foreground: #f4f5f6;
+  --card: #fbfaf8; /* raised sheet */
+  --card-foreground: #0b0c0e;
+  --popover: #ffffff;
+  --popover-foreground: #0b0c0e;
 
-  --primary: #5e6ad2; /* lavender CTA, the brand at full strength */
+  --primary: #4750bf;
+  --primary-foreground: #ffffff;
+  --primary-hover: #383f9e; /* light canvas: hover goes darker */
+  --primary-focus: #2e3585;
+
+  --secondary: #e9e7e2;
+  --secondary-foreground: #0b0c0e;
+
+  --muted: #eae8e3;
+  --muted-foreground: #6a6e75;
+
+  --accent: #e4e1db;
+  --accent-foreground: #0b0c0e;
+
+  --ink-muted: #3b3e44; /* long-form body */
+  --ink-subtle: #6a6e75; /* secondary body */
+  --ink-tertiary: #9b9ea4; /* small labels */
+
+  --success: #1f8d3a;
+  --success-foreground: #ffffff;
+  --warning: #a9760f;
+
+  --destructive: #c9353a;
+
+  --border: #e0ddd7; /* hairline */
+  --hairline-strong: #c8c4bc;
+  --input: #e0ddd7;
+  --ring: #4750bf;
+
+  --radius: 0.625rem;
+
+  --font-geist-sans: var(--font-inter);
+  font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  color: var(--foreground);
+  background-color: var(--background);
+}
+
+/*
+ * Dark islands. Product mocks, code and the finale are cut-outs of the real
+ * app dropped onto the paper — the single highest-contrast move on the page,
+ * and what makes a screenshot read as a screenshot. Slightly lifted off the
+ * product's true black so the island doesn't punch a hole in the sheet.
+ */
+.theme-landing .panel-dark {
+  --background: #0b0c0e;
+  --foreground: #f7f8f8;
+
+  --card: #131417;
+  --card-foreground: #f7f8f8;
+  --popover: #191a1e;
+  --popover-foreground: #f7f8f8;
+
+  --primary: #5e6ad2;
   --primary-foreground: #ffffff;
   --primary-hover: #828fff;
   --primary-focus: #5e69d1;
 
-  --secondary: #16171a;
-  --secondary-foreground: #f4f5f6;
+  --secondary: #131417;
+  --secondary-foreground: #f7f8f8;
 
-  --muted: #1a1b1e;
+  --muted: #191a1e;
   --muted-foreground: #8a8f98;
 
   --accent: #1e2024;
-  --accent-foreground: #f4f5f6;
+  --accent-foreground: #f7f8f8;
 
-  --ink-muted: #c9ced6; /* long-form body */
-  --ink-subtle: #8a8f98; /* secondary body */
-  --ink-tertiary: #63676d; /* small labels */
+  --ink-muted: #d0d6e0;
+  --ink-subtle: #8a8f98;
+  --ink-tertiary: #62666d;
 
   --success: #27a644;
   --success-foreground: #ffffff;
   --warning: #d9a441;
-
   --destructive: #e5484d;
 
-  --border: #212327;
-  --hairline-strong: #33363c;
-  --input: #212327;
+  --border: #26282d;
+  --hairline-strong: #3a3d43;
+  --input: #26282d;
   --ring: #828fff;
 
-  --radius: 0.625rem;
+  color: var(--foreground);
+}
 
-  /* Inter carries the body voice on the marketing surface. */
-  --font-geist-sans: var(--font-inter);
-  font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+/* Keep the overscroll gutter paper-coloured instead of product black. */
+html:has(.theme-landing) {
+  background-color: #f4f3f0;
 }
 
 .theme-landing ::selection {
+  color: #ffffff;
+  background: #4750bf;
+}
+
+.theme-landing .panel-dark ::selection {
   color: #ffffff;
   background: #5e6ad2;
 }
 
 /*
- * Serif italic accents inside display headings — one word set in Instrument
- * Serif against the grotesk headline, the humanist counterpoint.
+ * One word per headline set in Instrument Serif italic — the humanist
+ * counterpoint that keeps a wall of tight grotesk from reading as a template.
  */
 .theme-landing h1 em,
-.theme-landing h2 em {
+.theme-landing h2 em,
+.theme-landing h3 em {
   font-family: var(--font-instrument-serif), serif;
   font-size: 1.06em;
   font-style: italic;
   font-weight: 400;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.005em;
 }
 
 /*
- * Display type — the 127px editorial headline in Space Grotesk, fluid down
- * to mobile. Weight 700, tight leading.
+ * Display type. Inter at 700 with aggressive negative tracking and sub-1
+ * leading — the editorial poster voice of the page.
  */
 @utility text-display {
-  font-family: var(--font-space-grotesk), sans-serif;
-  font-size: clamp(3rem, 8vw, 7.9375rem);
+  font-size: clamp(3rem, 8.6vw, 8.5rem);
   font-weight: 700;
-  line-height: 0.98;
+  line-height: 0.9;
+  letter-spacing: -0.045em;
 }
 
 @utility text-display-2 {
-  font-family: var(--font-space-grotesk), sans-serif;
-  font-size: clamp(2rem, 4vw, 3.5rem);
+  font-size: clamp(2.25rem, 5vw, 4.5rem);
   font-weight: 700;
-  line-height: 1.05;
+  line-height: 0.98;
+  letter-spacing: -0.038em;
+}
+
+@utility text-display-3 {
+  font-size: clamp(1.5rem, 2.6vw, 2.125rem);
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.028em;
+}
+
+/* Small mono system label — chapter numbers, field names, HUD readouts. */
+@utility label-mono {
+  font-family: var(--font-jetbrains-mono), monospace;
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
 }
 
 @layer base {
@@ -236,7 +311,7 @@
     letter-spacing: -0.02em;
   }
 
-  /* Anchored sections clear the sticky 56px header on native jumps. */
+  /* Anchored sections clear the sticky header on native jumps. */
   section[id] {
     scroll-margin-top: 5rem;
   }
@@ -265,7 +340,7 @@
   box-shadow: inset 0 1px 0 0 rgb(255 255 255 / 0.05);
 }
 
-/* Interactive card lift — hairline brightens and the panel rises a hair. */
+/* Interactive card lift — hairline darkens and the panel rises a hair. */
 @utility card-interactive {
   transition:
     border-color 200ms ease,
@@ -274,11 +349,20 @@
 
   &:hover {
     border-color: var(--hairline-strong);
-    box-shadow:
-      0 8px 24px -12px rgb(0 0 0 / 0.7),
-      inset 0 1px 0 0 rgb(255 255 255 / 0.05);
+    box-shadow: 0 12px 28px -18px rgb(11 12 14 / 0.4);
     transform: translateY(-2px);
   }
+}
+
+/*
+ * The shadow every dark island casts on the paper. One value, used everywhere,
+ * so the whole page reads as lit from a single source.
+ */
+@utility island-shadow {
+  box-shadow:
+    0 2px 4px -2px rgb(11 12 14 / 0.1),
+    0 24px 48px -24px rgb(11 12 14 / 0.45),
+    0 64px 120px -60px rgb(11 12 14 / 0.35);
 }
 
 /* Section entrance — a restrained fade-and-rise for marketing content. */
@@ -294,73 +378,72 @@
 }
 
 @utility rise-in {
-  animation: rise-in 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: rise-in 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 /*
  * Scroll-reveal — elements start dimmed and translated, then settle when the
- * IntersectionObserver in <Reveal> adds `is-visible`. Complements rise-in,
- * which fires immediately on load for above-the-fold content.
+ * IntersectionObserver in <Reveal> adds `is-visible`.
  */
 @utility reveal {
   opacity: 0;
-  filter: blur(5px);
-  transform: translateY(28px);
+  transform: translateY(26px);
   transition:
-    opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
-    transform 0.8s cubic-bezier(0.16, 1, 0.3, 1),
-    filter 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-  will-change: transform, opacity, filter;
+    opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, opacity;
 
   &.is-visible {
     opacity: 1;
-    filter: blur(0);
     transform: none;
     will-change: auto;
   }
 }
 
-/* Directional variants — each still animates only transform + opacity. */
 @utility reveal-left {
-  transform: translateX(-32px);
+  transform: translateX(-28px);
 }
 
 @utility reveal-right {
-  transform: translateX(32px);
+  transform: translateX(28px);
 }
 
 @utility reveal-scale {
-  transform: scale(0.965) translateY(20px);
+  transform: scale(0.97) translateY(18px);
 }
 
 /*
- * Ambient lavender glow behind the hero — a soft radial bloom of the primary
- * accent, the one spot the design system lets the accent breathe at scale.
+ * Paper grain. A single tile of SVG turbulence at very low opacity, multiplied
+ * over the sheet so large flat areas have tooth instead of looking like a
+ * screenshot of a blank div.
  */
-@utility hero-glow {
-  background: radial-gradient(
-    60% 55% at 50% 0%,
-    color-mix(in oklab, var(--primary) 22%, transparent) 0%,
-    transparent 70%
-  );
+@utility paper-grain {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  mix-blend-mode: multiply;
+  opacity: 0.028;
 }
 
-/* Faint grid backdrop for section framing. */
+/* Engineering-drawing grid, drawn in hairlines. */
 @utility grid-backdrop {
   background-image:
     linear-gradient(to right, var(--border) 1px, transparent 1px),
     linear-gradient(to bottom, var(--border) 1px, transparent 1px);
-  background-size: 56px 56px;
-  mask-image: radial-gradient(
-    ellipse 70% 60% at 50% 40%,
-    #000 0%,
-    transparent 75%
-  );
+  background-size: 64px 64px;
+}
+
+/* Perspective stage — the container a "camera" move happens inside. */
+@utility stage-3d {
+  perspective: 1600px;
+  perspective-origin: 50% 42%;
 }
 
 /*
- * Blinking caret for the scroll-typed code snippet — steps() so it snaps
- * like a terminal cursor instead of fading.
+ * Blinking caret for the scroll-typed code snippet — steps() so it snaps like
+ * a terminal cursor instead of fading.
  */
 @keyframes caret-blink {
   0%,
@@ -377,8 +460,8 @@
   animation: caret-blink 0.9s steps(1) infinite;
 }
 
-/* Report-ticker rows slide in from above as they arrive. */
-@keyframes ticker-enter {
+/* Report-stream rows slide in from above as they arrive. */
+@keyframes stream-enter {
   from {
     opacity: 0;
     transform: translateY(-10px);
@@ -389,167 +472,11 @@
   }
 }
 
-@utility ticker-enter {
-  animation: ticker-enter 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+@utility stream-enter {
+  animation: stream-enter 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
-/*
- * Native scroll-driven animations (CSS ScrollTimeline / ViewTimeline),
- * progressively enhanced: Chrome/Edge 115+ and Safari 18.4+ run these on the
- * compositor with zero JS; elsewhere the rAF drivers in <ScrollProgress> and
- * <Reveal> keep working. Gated on prefers-reduced-motion.
- */
-@media (prefers-reduced-motion: no-preference) {
-  /* Reading progress — scrubbed by root scroll, no scroll listener at all. */
-  @supports (animation-timeline: scroll(root)) {
-    .scroll-progress-native {
-      animation: grow-progress linear both;
-      animation-timeline: scroll(root block);
-    }
-  }
-
-  /*
-   * Scrubbed entrance for the product islands: they rise and sharpen in step
-   * with their journey into the viewport, and scrub back out when the reader
-   * reverses. Distinct from .reveal (a one-shot transition on other nodes).
-   */
-  @supports (animation-timeline: view()) {
-    .view-rise {
-      animation: view-rise linear both;
-      animation-timeline: view();
-      animation-range: entry 0% entry 85%;
-    }
-  }
-}
-
-@keyframes grow-progress {
-  from {
-    transform: scaleX(0);
-  }
-  to {
-    transform: scaleX(1);
-  }
-}
-
-@keyframes view-rise {
-  from {
-    opacity: 0.35;
-    transform: translateY(30px) scale(0.97);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-}
-
-/*
- * Film grain over dark scenes — the same SVG noise as the boot screen,
- * tiled at low opacity so gradients never band.
- */
-@utility noise-overlay {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  opacity: 0.035;
-}
-
-/* Soft vignette that pools light toward the center of a scene. */
-@utility vignette {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background: radial-gradient(
-    120% 90% at 50% 30%,
-    transparent 55%,
-    rgb(0 0 0 / 0.5) 100%
-  );
-}
-
-/*
- * Aurora blobs — slow-drifting lavender blooms behind the hero. Blur is
- * rendered once per layer; only transform animates, so the drift stays on
- * the compositor.
- */
-@keyframes aurora-drift-a {
-  0%,
-  100% {
-    transform: translate3d(0, 0, 0) scale(1);
-  }
-  50% {
-    transform: translate3d(60px, 40px, 0) scale(1.15);
-  }
-}
-
-@keyframes aurora-drift-b {
-  0%,
-  100% {
-    transform: translate3d(0, 0, 0) scale(1.1);
-  }
-  50% {
-    transform: translate3d(-70px, -30px, 0) scale(0.95);
-  }
-}
-
-@utility aurora-blob {
-  position: absolute;
-  border-radius: 9999px;
-  filter: blur(70px);
-  backface-visibility: hidden;
-}
-
-@utility aurora-a {
-  animation: aurora-drift-a 16s ease-in-out infinite;
-}
-
-@utility aurora-b {
-  animation: aurora-drift-b 19s ease-in-out infinite;
-}
-
-/* Gradient display text — foreground fading toward lavender. */
-@utility text-gradient {
-  color: transparent;
-  background: linear-gradient(135deg, #f4f5f6 30%, #828fff 90%);
-  -webkit-background-clip: text;
-  background-clip: text;
-}
-
-/*
- * Mouse-reactive glow card — a radial highlight tracks the cursor via
- * --gx/--gy custom properties written by <GlowCard>, and the border warms
- * where the light lands.
- */
-@utility glow-card {
-  position: relative;
-  overflow: hidden;
-  background: var(--card);
-  border: 1px solid var(--border);
-  transition: border-color 0.3s ease;
-
-  &::before {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    content: "";
-    background: radial-gradient(
-      320px circle at var(--gx, 50%) var(--gy, 50%),
-      color-mix(in oklab, var(--primary) 13%, transparent),
-      transparent 70%
-    );
-    opacity: 0;
-    transition: opacity 0.3s ease;
-  }
-
-  &:hover {
-    border-color: color-mix(in oklab, var(--primary) 35%, var(--border));
-  }
-
-  &:hover::before {
-    opacity: 1;
-  }
-}
-
-/* Context strip — an endless drift of the metadata chips Lumen captures. */
+/* Endless horizontal drift for the captured-context strip. */
 @keyframes strip-drift {
   from {
     transform: translateX(0);
@@ -560,25 +487,18 @@
 }
 
 @utility strip-track {
-  animation: strip-drift 36s linear infinite;
+  animation: strip-drift 42s linear infinite;
 }
 
-/*
- * Sticky-stack cards — each card pins below the header and the next one
- * scrolls up over it, so the sequence reads as a deck being dealt.
- */
-@utility stack-card {
-  position: sticky;
-  top: calc(6rem + var(--stack-offset, 0px));
-}
-
-/*
- * Parallax layer — its transform is driven per-scroll-frame by <ScrollFX>.
- * will-change lives here (a small, deliberate set of elements) so the browser
- * keeps each on its own compositor layer.
- */
-@utility parallax {
-  will-change: transform;
+/* Edge fade for horizontally scrolling bands. A mask, not a visible gradient. */
+@utility mask-fade-x {
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    #000 8%,
+    #000 92%,
+    transparent
+  );
 }
 
 /*
@@ -596,168 +516,74 @@
 
 @utility line-mask {
   display: block;
-  padding-bottom: 0.08em;
+  padding-bottom: 0.1em;
   overflow: hidden;
 }
 
 @utility line-rise {
   display: block;
   transform: translateY(115%);
-  animation: line-rise 0.95s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: line-rise 1.05s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 /*
- * Boot sequence — igloo.inc-style dark intro. A canvas particle field
- * assembles the wordmark in real time while corner HUD readouts (boot log,
- * version, live percentage) track the same progress; at 100 the particles
- * scatter and a five-column dark curtain peels up into the light page.
- * Driven by <PageIntro>, which unmounts it when done.
- *
- * While the curtain plays, `.intro-playing` on <html> freezes the hero's
- * staggered reveals in their hidden state; <PageIntro> removes the class as the
- * curtain lifts so they rise in sync instead of playing behind the curtain.
+ * Native scroll-driven entrance for the dark islands (Chrome/Edge 115+,
+ * Safari 18.4+): they rise and settle in step with their journey into the
+ * viewport, on the compositor, with zero JS. Elsewhere they just render.
  */
-.intro-playing .rise-in,
-.intro-playing .line-rise {
-  animation-play-state: paused !important;
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .view-rise {
+      animation: view-rise linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 80%;
+    }
+  }
 }
 
-@utility intro-root {
-  position: fixed;
-  inset: 0;
-  z-index: 100;
-  overflow: hidden;
-  color: #e7e7e4;
-  /* The boot screen is deliberately dark: the reveal flips into the light
-   * canvas, which is the sequence's payoff. */
-  background: #101010;
-}
-
-/* Peeling curtain — equal columns that lift on a per-column stagger. */
-@utility intro-panels {
-  position: absolute;
-  inset: 0;
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-}
-
-@utility intro-panel {
-  background: #101010;
-  transform: translateY(0);
-  transition: transform 0.9s cubic-bezier(0.76, 0, 0.24, 1);
-  will-change: transform;
-}
-
-/* Content layer — fades and drifts up ahead of the peel. */
-@utility intro-content {
-  position: absolute;
-  inset: 0;
-  display: grid;
-  place-items: center;
-  transition:
-    opacity 0.35s ease,
-    transform 0.6s cubic-bezier(0.76, 0, 0.24, 1);
-}
-
-.intro-root.is-revealing .intro-content {
-  opacity: 0;
-  transform: translateY(-24px);
-}
-
-.intro-root.is-revealing .intro-panel {
-  transform: translateY(-100%);
-}
-
-/* Subtle film grain over the boot screen. */
-@utility intro-grain {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  opacity: 0.04;
-}
-
-/* The particle wordmark renders here, full-bleed behind the HUD. */
-@utility intro-canvas {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-}
-
-/* Corner HUD readouts — small mono system text. */
-@utility intro-hud {
-  position: absolute;
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
-  font-family: var(--font-jetbrains-mono), monospace;
-  font-size: 11px;
-  color: rgb(231 231 228 / 0.55);
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-}
-
-@utility intro-hud-tl {
-  top: clamp(1.25rem, 4vh, 2.5rem);
-  left: clamp(1.5rem, 4vw, 2.5rem);
-}
-
-@utility intro-hud-bl {
-  bottom: clamp(1.25rem, 5vh, 3rem);
-  left: clamp(1.5rem, 4vw, 2.5rem);
-}
-
-@utility intro-hud-title {
-  margin-bottom: 0.35rem;
-  color: rgb(231 231 228 / 0.9);
-}
-
-/* Boot-log lines resolve as progress passes each threshold. */
-@utility intro-line {
-  display: flex;
-  gap: 0.5em;
-  align-items: baseline;
-  opacity: 0.25;
-  transition: opacity 0.2s ease;
-
-  &[data-on] {
+@keyframes view-rise {
+  from {
+    opacity: 0.4;
+    transform: translateY(36px) scale(0.97);
+  }
+  to {
     opacity: 1;
+    transform: translateY(0) scale(1);
   }
 }
 
-@utility intro-line-tick {
-  color: rgb(231 231 228 / 0.4);
+/* Underline that draws in from the left on hover — used on text links. */
+@utility link-underline {
+  position: relative;
 
-  [data-on] > & {
-    color: #5e6ad2;
+  &::after {
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    content: "";
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   }
-}
 
-/* Large percentage counter, pinned to the lower-right corner. */
-@utility intro-count {
-  position: absolute;
-  right: clamp(1.5rem, 5vw, 4rem);
-  bottom: clamp(1.25rem, 5vh, 3rem);
-  display: flex;
-  align-items: baseline;
-  font-size: clamp(2.5rem, 7vw, 5rem);
-  font-weight: 700;
-  font-variant-numeric: tabular-nums;
-  line-height: 1;
-  color: #e7e7e4;
-  letter-spacing: -0.03em;
-}
-
-@utility intro-count-unit {
-  font-size: 0.4em;
-  color: rgb(231 231 228 / 0.4);
+  &:hover::after {
+    transform: scaleX(1);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  /* biome-ignore lint/style/noDescendingSpecificity: reduced-motion override of the .intro-playing pause rule — must neutralize the animation regardless of specificity. */
-  .rise-in {
+  .rise-in,
+  .line-rise,
+  .caret-blink,
+  .strip-track,
+  .stream-enter {
     animation: none;
+  }
+  .line-rise {
+    transform: none;
   }
   .card-interactive:hover {
     transform: none;
@@ -766,14 +592,5 @@
     opacity: 1;
     transform: none;
     transition: none;
-  }
-  .caret-blink,
-  .strip-track {
-    animation: none;
-  }
-  /* biome-ignore lint/style/noDescendingSpecificity: reduced-motion override of the .intro-playing pause rule — must neutralize the animation regardless of specificity. */
-  .line-rise {
-    transform: none;
-    animation: none;
   }
 }
